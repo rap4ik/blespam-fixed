@@ -86,7 +86,6 @@ class BluetoothAdvertiser {
             .setScannable(false)
             .setPrimaryPhy(BluetoothDevice.PHY_LE_1M)
             .setSecondaryPhy(BluetoothDevice.PHY_LE_1M)
-            .setOwnAddressType(AdvertisingSetParameters.ADDRESS_TYPE_RANDOM)
             .build()
 
         extCallback = object : AdvertisingSetCallback() {
