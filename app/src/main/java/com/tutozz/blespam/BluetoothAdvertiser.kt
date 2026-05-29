@@ -79,13 +79,14 @@ class BluetoothAdvertiser {
         // ИСПРАВЛЕНИЕ: setLegacyMode(false) для payload > 31 байт, scannable(false)
         // ═══════════════════════════════════════════════════════════
         val params = AdvertisingSetParameters.Builder()
-            .setLegacyMode(false)  // ← ИЗМЕНЕНО! Было true
+            .setLegacyMode(false)
             .setInterval(AdvertisingSetParameters.INTERVAL_MIN)
             .setTxPowerLevel(AdvertisingSetParameters.TX_POWER_HIGH)
             .setConnectable(false)
-            .setScannable(false) // ← ИЗМЕНЕНО! Было true, вызывало внутреннюю ошибку (4) без scanResponse
+            .setScannable(false)
             .setPrimaryPhy(BluetoothDevice.PHY_LE_1M)
             .setSecondaryPhy(BluetoothDevice.PHY_LE_1M)
+            .setOwnAddressType(AdvertisingSetParameters.ADDRESS_TYPE_RANDOM)
             .build()
 
         extCallback = object : AdvertisingSetCallback() {
