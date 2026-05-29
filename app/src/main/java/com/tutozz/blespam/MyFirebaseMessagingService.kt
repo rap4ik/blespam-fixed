@@ -1,5 +1,9 @@
 package com.tutozz.blespam
 
-import com.google.firebase.messaging.FirebaseMessagingService
+import android.app.Service
+import android.content.Intent
+import android.os.IBinder
 
-class MyFirebaseMessagingService : FirebaseMessagingService()
+class MyFirebaseMessagingService : Service() {
+    override fun onBind(intent: Intent?): IBinder? = null
+}
