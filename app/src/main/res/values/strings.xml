@@ -178,5 +178,6 @@
     <string name="beta_version_close_button">Close</string>
     <string name="beta_version_close_button_timer">Close (%1$d)</string>
     <string name="bluetooth_enable_notification">Bluetooth is off. Please turn it on to use BLE Spam.</string>
+    <string name="_20ms" translatable="false">20ms</string>
 </resources>
 
