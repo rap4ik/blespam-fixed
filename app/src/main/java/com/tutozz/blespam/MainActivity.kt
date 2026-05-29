@@ -165,7 +165,6 @@ class MainActivity : AppCompatActivity() {
         Log.d("BLESpam", "MainActivity onCreate - Analytics initialized")
 
         createHandler().postDelayed({
-            initializeFirebaseMessaging()
         }, 2000)
 
         val bugButton = findViewById<ImageView>(R.id.settingsButton)
@@ -197,52 +196,11 @@ class MainActivity : AppCompatActivity() {
         applyThemeColor()
     }
 
-    private fun initializeFirebaseMessaging() {
-        if (!isNetworkAvailable()) {
-            Log.w("BLESpam", "No internet connection, token will be fetched later")
-            return
-        }
 
         fetchFCMToken()
     }
 
     private fun fetchFCMToken(retryCount: Int = 0) {
-        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
-            if (!task.isSuccessful) {
-                val exception = task.exception
-                Log.w("BLESpam", "FCM token fetch failed (attempt ${retryCount + 1})", exception)
-
-                // Analytics: Token fetch failed
-
-                // Повторная попытка через 5 секунд (максимум 3 попытки)
-                if (retryCount < 3) {
-                    createHandler().postDelayed({
-                        fetchFCMToken(retryCount + 1)
-                    }, 5000)
-                } else {
-                    runOnUiThread {
-                        Toast.makeText(
-                            this,
-                            "Не удалось получить FCM токен. Проверьте интернет и Google Play Services",
-                            Toast.LENGTH_LONG
-                        ).show()
-                    }
-                }
-                return@addOnCompleteListener
-            }
-
-            val token = task.result
-            Log.d("BLESpam", "FCM Token: $token")
-
-            // Analytics: Token received
-
-            sharedPref.edit().putString("fcm_token", token).apply()
-            saveTokenToFirebase(token)
-
-            runOnUiThread {
-                Toast.makeText(this, "Push уведомления активированы", Toast.LENGTH_SHORT).show()
-            }
-        }
     }
 
     private fun saveTokenToFirebase(token: String) {
@@ -251,8 +209,6 @@ class MainActivity : AppCompatActivity() {
         val country = NotificationAudienceHelper.getSelectedCountry(this)
 
         try {
-            val database = FirebaseDatabase.getInstance(AppConfig.FIREBASE_DB_URL)
-            val tokensRef = database.getReference("fcm_tokens")
 
             val tokenData = mapOf(
                 "token" to token,
