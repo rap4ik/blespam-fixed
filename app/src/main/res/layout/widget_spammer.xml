@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:gravity="center"
+    android:padding="4dp">
+
+    <ImageButton
+        android:id="@+id/widget_btn_apple"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@drawable/bg_rounded_white_button"
+        android:layout_margin="2dp">
+        <ImageView
+            android:id="@+id/widget_icon_apple"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_notification" />
+    </ImageButton>
+
+    <ImageButton
+        android:id="@+id/widget_btn_android"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@drawable/bg_rounded_white_button"
+        android:layout_margin="2dp">
+        <ImageView
+            android:id="@+id/widget_icon_android"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_notification" />
+    </ImageButton>
+
+    <ImageButton
+        android:id="@+id/widget_btn_windows"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@drawable/bg_rounded_white_button"
+        android:layout_margin="2dp">
+        <ImageView
+            android:id="@+id/widget_icon_windows"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_notification" />
+    </ImageButton>
+
+</LinearLayout>
