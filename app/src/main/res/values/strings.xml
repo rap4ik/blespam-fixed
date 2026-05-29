@@ -177,6 +177,6 @@
     <string name="beta_version_message">This version of the application is intended exclusively for testing.\n\nPublication or distribution of this version on the internet is prohibited and will result in exclusion from the beta testing program.</string>
     <string name="beta_version_close_button">Close</string>
     <string name="beta_version_close_button_timer">Close (%1$d)</string>
-</resources>
-    <!-- Missing strings referenced in code -->
     <string name="bluetooth_enable_notification">Bluetooth is off. Please turn it on to use BLE Spam.</string>
+</resources>
+
