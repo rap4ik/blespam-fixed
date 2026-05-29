@@ -53,18 +53,9 @@ import com.tutozz.blespam.R
 import com.google.android.material.button.MaterialButton
 import android.graphics.Color
 import androidx.annotation.AttrRes
-import com.google.firebase.messaging.FirebaseMessaging
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.analytics.FirebaseAnalytics
-import com.google.firebase.analytics.ktx.analytics
-import com.google.firebase.analytics.ktx.logEvent
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.database.DatabaseException
 
 
 class MainActivity : AppCompatActivity() {
-
-    private lateinit var firebaseAnalytics: FirebaseAnalytics
 
     private val spammerList = mutableListOf<Spammer>()
     private lateinit var sharedPref: android.content.SharedPreferences
@@ -130,10 +121,6 @@ class MainActivity : AppCompatActivity() {
     ) { result ->
         Log.d("BLESpam", "Bluetooth enable result: ${result.resultCode}")
 
-        firebaseAnalytics.logEvent("bluetooth_enable_result") {
-            param("granted", if (result.resultCode == RESULT_OK) "yes" else "no")
-        }
-
         isBluetoothRequestPending = false
         if (result.resultCode == RESULT_OK) {
             Toast.makeText(this, getString(R.string.bluetoothon), Toast.LENGTH_SHORT).show()
@@ -174,11 +161,6 @@ class MainActivity : AppCompatActivity() {
         // 1. ИНИЦИАЛИЗАЦИЯ UI ЭЛЕМЕНТОВ СРАЗУ ПОСЛЕ setContentView
         logo = findViewById(R.id.logo)
 
-        firebaseAnalytics = Firebase.analytics
-        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.APP_OPEN) {
-            param(FirebaseAnalytics.Param.METHOD, "normal_launch")
-        }
-
         setUserProperties()
         Log.d("BLESpam", "MainActivity onCreate - Analytics initialized")
 
@@ -188,9 +170,6 @@ class MainActivity : AppCompatActivity() {
 
         val bugButton = findViewById<ImageView>(R.id.settingsButton)
         bugButton.setOnClickListener {
-            firebaseAnalytics.logEvent("settings_opened") {
-                param(FirebaseAnalytics.Param.SCREEN_NAME, "Settings")
-            }
             startActivity(Intent(this, SettingsActivity::class.java))
         }
 
@@ -234,10 +213,6 @@ class MainActivity : AppCompatActivity() {
                 Log.w("BLESpam", "FCM token fetch failed (attempt ${retryCount + 1})", exception)
 
                 // Analytics: Token fetch failed
-                firebaseAnalytics.logEvent("fcm_token_fetch_failed") {
-                    param("attempt", retryCount.toLong())
-                    param("error", exception?.message ?: "unknown")
-                }
 
                 // Повторная попытка через 5 секунд (максимум 3 попытки)
                 if (retryCount < 3) {
@@ -260,9 +235,6 @@ class MainActivity : AppCompatActivity() {
             Log.d("BLESpam", "FCM Token: $token")
 
             // Analytics: Token received
-            firebaseAnalytics.logEvent("fcm_token_received") {
-                param("success", "yes")
-            }
 
             sharedPref.edit().putString("fcm_token", token).apply()
             saveTokenToFirebase(token)
@@ -298,24 +270,14 @@ class MainActivity : AppCompatActivity() {
                     Log.d("BLESpam", "Token saved to Firebase Database")
 
                     // Analytics: Token saved
-                    firebaseAnalytics.logEvent("fcm_token_saved") {
-                        param("database", "firebase")
-                    }
                 }
                 .addOnFailureListener { exception: Exception ->
                     Log.e("BLESpam", "Failed to save token", exception)
 
                     // Analytics: Token save failed
-                    firebaseAnalytics.logEvent("fcm_token_save_failed") {
-                        param("error", exception.message ?: "unknown")
-                    }
                 }
         } catch (e: Exception) {
             Log.e("BLESpam", "Firebase Database error: ${e.message}", e)
-
-            firebaseAnalytics.logEvent("firebase_db_error") {
-                param("error", e.message ?: "unknown")
-            }
         }
     }
 
@@ -350,9 +312,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun logAppOpen() {
-        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.APP_OPEN) {
-            param(FirebaseAnalytics.Param.METHOD, "normal_launch")
-        }
         Log.d("BLESpam", "Analytics: App opened")
     }
 
@@ -653,10 +612,6 @@ class MainActivity : AppCompatActivity() {
                 Helper.saveDelay(this)
 
                 // Analytics: Delay changed
-                firebaseAnalytics.logEvent("delay_changed") {
-                    param("new_delay_ms", Helper.delay.toLong())
-                    param("direction", "decreased")
-                }
             }
         }
 
@@ -668,10 +623,6 @@ class MainActivity : AppCompatActivity() {
                 Helper.saveDelay(this)
 
                 // Analytics: Delay changed
-                firebaseAnalytics.logEvent("delay_changed") {
-                    param("new_delay_ms", Helper.delay.toLong())
-                    param("direction", "increased")
-                }
             }
         }
     }
@@ -696,9 +647,6 @@ class MainActivity : AppCompatActivity() {
                     Log.d("BLESpam", "Все разрешения получены.")
 
                     // Analytics: All permissions granted
-                    firebaseAnalytics.logEvent("all_permissions_granted") {
-                        param("count", permissions.size.toLong())
-                    }
 
                     createHandler().postDelayed({
                     }, 500)
@@ -708,10 +656,6 @@ class MainActivity : AppCompatActivity() {
                     Log.w("BLESpam", "Отклонены следующие разрешения: ${deniedPermissions.joinToString(", ")}")
 
                     // Analytics: Permissions denied
-                    firebaseAnalytics.logEvent("permissions_denied") {
-                        param("denied_count", deniedPermissions.size.toLong())
-                        param("denied_list", deniedPermissions.joinToString(","))
-                    }
 
                     Toast.makeText(
                         this,
@@ -728,10 +672,6 @@ class MainActivity : AppCompatActivity() {
                 val granted = grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED
 
                 // Analytics: Bluetooth permission result
-                firebaseAnalytics.logEvent("permission_result") {
-                    param("permission_type", "bluetooth")
-                    param("granted", if (granted) "yes" else "no")
-                }
 
                 if (granted) {
                     Log.d("BLESpam", "Bluetooth permission granted, checking if enabled")
@@ -758,10 +698,6 @@ class MainActivity : AppCompatActivity() {
                 val granted = grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED
 
                 // Analytics: Notification permission result
-                firebaseAnalytics.logEvent("permission_result") {
-                    param("permission_type", "notification")
-                    param("granted", if (granted) "yes" else "no")
-                }
 
                 if (granted) {
                     Log.d("BLESpam", "Notification permission granted")
@@ -790,9 +726,6 @@ class MainActivity : AppCompatActivity() {
             SpamService.stopAllSpammers(this)
 
             // Analytics: All spammers stopped
-            firebaseAnalytics.logEvent("all_spammers_stopped") {
-                param("method", "manual")
-            }
         }
 
         if (!isFinishing && !isDestroyed) {
@@ -1143,10 +1076,6 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
 
         // Analytics: Screen view
-        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW) {
-            param(FirebaseAnalytics.Param.SCREEN_NAME, "MainActivity")
-            param(FirebaseAnalytics.Param.SCREEN_CLASS, "MainActivity")
-        }
 
         resetAllSpammerButtonsUi()
         restoreSpammerUiState()
@@ -1509,10 +1438,6 @@ class MainActivity : AppCompatActivity() {
 
             if (isActuallyRunning) {
                 // Analytics: Spammer stopped
-                firebaseAnalytics.logEvent("spammer_stopped") {
-                    param("spammer_name", spammerName)
-                    param("duration", System.currentTimeMillis())
-                }
 
                 try {
                     val blinkRunnable = spammer.getBlinkRunnable()
@@ -1534,10 +1459,6 @@ class MainActivity : AppCompatActivity() {
                     Log.e("BLESpam", "Failed to stop spammer $spammerName", e)
 
                     // Analytics: Spammer stop error
-                    firebaseAnalytics.logEvent("spammer_stop_error") {
-                        param("spammer_name", spammerName)
-                        param("error", e.message ?: "unknown")
-                    }
                 }
                 return@setOnClickListener
             }
@@ -1550,10 +1471,6 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, getString(R.string.notifications_permission_required), Toast.LENGTH_SHORT).show()
 
                 // Analytics: Permission required
-                firebaseAnalytics.logEvent("permission_required") {
-                    param("type", "notification")
-                    param("spammer_name", spammerName)
-                }
 
                 return@setOnClickListener
             }
@@ -1562,9 +1479,6 @@ class MainActivity : AppCompatActivity() {
                 promptToEnableBluetooth()
 
                 // Analytics: Bluetooth required
-                firebaseAnalytics.logEvent("bluetooth_required") {
-                    param("spammer_name", spammerName)
-                }
 
                 return@setOnClickListener
             }
@@ -1596,19 +1510,11 @@ class MainActivity : AppCompatActivity() {
                         .apply()
 
                     // Analytics: Spammer started
-                    firebaseAnalytics.logEvent("spammer_started") {
-                        param("spammer_name", spammerName)
-                        param("timestamp", System.currentTimeMillis())
-                    }
 
                 } catch (e: Exception) {
                     Log.e("BLESpam", "Failed to start spammer $spammerName", e)
 
                     // Analytics: Spammer start error
-                    firebaseAnalytics.logEvent("spammer_start_error") {
-                        param("spammer_name", spammerName)
-                        param("error", e.message ?: "unknown")
-                    }
 
                     runOnUiThread {
                         circle.setImageResource(R.drawable.grey_circle)
