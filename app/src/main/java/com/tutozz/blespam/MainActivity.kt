@@ -197,45 +197,9 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-        fetchFCMToken()
     }
 
-    private fun fetchFCMToken(retryCount: Int = 0) {
-    }
 
-    private fun saveTokenToFirebase(token: String) {
-        val deviceId = Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID)
-        val language = NotificationAudienceHelper.getSelectedLanguage(this)
-        val country = NotificationAudienceHelper.getSelectedCountry(this)
-
-        try {
-
-            val tokenData = mapOf(
-                "token" to token,
-                "device_id" to deviceId,
-                "timestamp" to System.currentTimeMillis(),
-                "app_version" to getAppVersion(),
-                "device_model" to Build.MODEL,
-                "android_version" to Build.VERSION.RELEASE,
-                "language" to language,
-                "country" to country
-            )
-
-            tokensRef.child(deviceId).setValue(tokenData)
-                .addOnSuccessListener {
-                    Log.d("BLESpam", "Token saved to Firebase Database")
-
-                    // Analytics: Token saved
-                }
-                .addOnFailureListener { exception: Exception ->
-                    Log.e("BLESpam", "Failed to save token", exception)
-
-                    // Analytics: Token save failed
-                }
-        } catch (e: Exception) {
-            Log.e("BLESpam", "Firebase Database error: ${e.message}", e)
-        }
-    }
 
 
 
@@ -651,7 +615,6 @@ class MainActivity : AppCompatActivity() {
 
                 if (granted) {
                     Log.d("BLESpam", "Notification permission granted")
-                    fetchFCMToken()
                     restoreSpammerUiState()
                 } else {
                     Log.w("BLESpam", "Notification permission denied")
