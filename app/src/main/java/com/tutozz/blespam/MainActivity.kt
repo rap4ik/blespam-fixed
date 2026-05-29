@@ -154,7 +154,7 @@ class MainActivity : AppCompatActivity() {
         val theme = sharedPref.getString("theme", "auto") ?: "auto"
         setAppTheme(theme)
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_main_material)
 
         // 1. ИНИЦИАЛИЗАЦИЯ UI ЭЛЕМЕНТОВ СРАЗУ ПОСЛЕ setContentView
         logo = findViewById(R.id.logo)
