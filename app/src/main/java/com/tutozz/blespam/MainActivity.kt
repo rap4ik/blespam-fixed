@@ -92,8 +92,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var samsungEasyPairWatchCircle: ImageView
     private lateinit var windowsSwiftPairButton: MaterialButton
     private lateinit var windowsSwiftPairCircle: ImageView
-    private lateinit var YandexButton: MaterialButton
-    private lateinit var YandexCircle: ImageView
     private lateinit var minusDelayButton: MaterialButton
     private lateinit var plusDelayButton: MaterialButton
     private lateinit var delayText: TextView
@@ -258,7 +256,6 @@ class MainActivity : AppCompatActivity() {
             samsungEasyPairBudsButton to samsungEasyPairBudsCircle,
             samsungEasyPairWatchButton to samsungEasyPairWatchCircle,
             windowsSwiftPairButton to windowsSwiftPairCircle,
-            YandexButton to YandexCircle
         )
 
         buttons.forEach { (button, circle) ->
@@ -333,7 +330,6 @@ class MainActivity : AppCompatActivity() {
         applyInactiveStyle(samsungEasyPairBudsButton, samsungEasyPairBudsCircle)
         applyInactiveStyle(samsungEasyPairWatchButton, samsungEasyPairWatchCircle)
         applyInactiveStyle(windowsSwiftPairButton, windowsSwiftPairCircle)
-        applyInactiveStyle(YandexButton, YandexCircle)
         updateLogoAnimation()
     }
 
@@ -367,8 +363,6 @@ class MainActivity : AppCompatActivity() {
         samsungEasyPairWatchCircle = findViewById(R.id.samsungEasyPairWatchCircle)
         windowsSwiftPairButton = findViewById(R.id.windowsSwiftPairButton)
         windowsSwiftPairCircle = findViewById(R.id.windowsSwiftPairCircle)
-        YandexButton = findViewById(R.id.YandexButton)
-        YandexCircle = findViewById(R.id.YandexCircle)
         minusDelayButton = findViewById(R.id.minusDelayButton)
         plusDelayButton = findViewById(R.id.plusDelayButton)
         delayText = findViewById(R.id.delayText)
@@ -419,7 +413,6 @@ class MainActivity : AppCompatActivity() {
                 Triple("Samsung Buds", samsungEasyPairBudsButton to samsungEasyPairBudsCircle, { EasySetupSpam(EasySetupDevice.type.BUDS) }),
                 Triple("Samsung Watch", samsungEasyPairWatchButton to samsungEasyPairWatchCircle, { EasySetupSpam(EasySetupDevice.type.WATCH) }),
                 Triple("Windows Swift Pair", windowsSwiftPairButton to windowsSwiftPairCircle, { SwiftPairSpam() }),
-                Triple("Yandex", YandexButton to YandexCircle, { YandexSpam() })
             )
 
             for (item in mapping) {
@@ -510,7 +503,6 @@ class MainActivity : AppCompatActivity() {
             onClickSpamButton(EasySetupSpam(EasySetupDevice.type.BUDS), "Samsung Buds", samsungEasyPairBudsButton, samsungEasyPairBudsCircle)
             onClickSpamButton(EasySetupSpam(EasySetupDevice.type.WATCH), "Samsung Watch", samsungEasyPairWatchButton, samsungEasyPairWatchCircle)
             onClickSpamButton(SwiftPairSpam(), "Windows Swift Pair", windowsSwiftPairButton, windowsSwiftPairCircle)
-            onClickSpamButton(YandexSpam(), "Yandex", YandexButton, YandexCircle)
         } catch (@Suppress("UNUSED_PARAMETER") e: IOException) {
             Toast.makeText(this, getString(R.string.swiftpair), Toast.LENGTH_SHORT).show()
         }
@@ -1583,7 +1575,6 @@ class MainActivity : AppCompatActivity() {
             samsungEasyPairBudsButton -> "Samsung Buds"
             samsungEasyPairWatchButton -> "Samsung Watch"
             windowsSwiftPairButton -> "Windows Swift Pair"
-            YandexButton -> "Yandex"
             else -> null
         }
     }
