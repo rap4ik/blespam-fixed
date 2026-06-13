@@ -522,4 +522,61 @@
         </LinearLayout>
     </FrameLayout>
 
+
+    <!-- BLE Packet Log Panel -->
+    <LinearLayout
+        android:id="@+id/logPanel"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        android:background="#CC000000"
+        android:padding="8dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="BLE Packet Log"
+                android:textColor="#00FF88"
+                android:textSize="12sp"
+                android:fontFamily="monospace" />
+
+            <TextView
+                android:id="@+id/packetCounter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TX: 0"
+                android:textColor="#FFD700"
+                android:textSize="11sp"
+                android:fontFamily="monospace" />
+
+        </LinearLayout>
+
+        <ScrollView
+            android:id="@+id/logScrollView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:fadeScrollbars="false">
+
+            <TextView
+                android:id="@+id/logTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#AAFFAA"
+                android:textSize="9sp"
+                android:fontFamily="monospace"
+                android:text="Waiting for packets..." />
+
+        </ScrollView>
+
+    </LinearLayout>
+
 </RelativeLayout>

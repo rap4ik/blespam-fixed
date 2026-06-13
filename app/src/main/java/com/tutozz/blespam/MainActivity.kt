@@ -1,6 +1,7 @@
 package com.tutozz.blespam
 
 import android.Manifest
+import android.widget.ScrollView
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.bluetooth.BluetoothAdapter
@@ -155,6 +156,11 @@ class MainActivity : AppCompatActivity() {
         setAppTheme(theme)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_material)
+        // Init packet logger
+        val logView = findViewById<android.widget.TextView>(R.id.logTextView)
+        val scrollView = findViewById<ScrollView>(R.id.logScrollView)
+        val counterView = findViewById<android.widget.TextView>(R.id.packetCounter)
+        PacketLogger.attach(logView, scrollView, counterView)
 
         // 1. ИНИЦИАЛИЗАЦИЯ UI ЭЛЕМЕНТОВ СРАЗУ ПОСЛЕ setContentView
         logo = findViewById(R.id.logo)
