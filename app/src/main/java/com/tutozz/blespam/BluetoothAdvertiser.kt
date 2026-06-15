@@ -20,6 +20,7 @@ class BluetoothAdvertiser {
     private val advertiseCallback = object : AdvertiseCallback() {
         override fun onStartSuccess(settingsInEffect: AdvertiseSettings) {
             Helper.log("Advertising started")
+            PacketLogger.logTx("BLE Legacy", "Legacy advertising started")
         }
 
         override fun onStartFailure(errorCode: Int) {
@@ -96,6 +97,7 @@ class BluetoothAdvertiser {
             ) {
                 if (status == ADVERTISE_SUCCESS) {
                     Helper.log("Extended advertising started (tx=$txPower dBm)")
+                    PacketLogger.logTx("BLE Extended", "tx=${txPower}dBm status=$status")
                 } else {
                     Helper.log("Extended advertising failed: $status")
                     if (status == 2) { // DATA_TOO_LARGE
