@@ -1160,7 +1160,8 @@ class MainActivity : AppCompatActivity() {
     private fun canSpammerWork(): Boolean {
         val hasNotification = hasNotificationPermission()
         val hasBluetooth = isBluetoothEnabledSilent()
-        return hasNotification || hasBluetooth
+        Log.d("BLESpam", "canSpammerWork: notification=$hasNotification bt=$hasBluetooth")
+        return hasBluetooth
     }
 
     private fun vibrate(pattern: LongArray) {
