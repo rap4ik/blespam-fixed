@@ -388,22 +388,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun completeInitialization() {
-        if (if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                Helper.isPermissionGranted(this)
-            } else {
-                ContextCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.ACCESS_FINE_LOCATION
-                ) == PackageManager.PERMISSION_GRANTED
-            }
-        ) {
-            // Restore persisted delay and concurrent mode
-            Helper.loadDelay(this)
-            initializeViews()
-            initializeSpamButtons()
-            restoreSpammerUiState()
-            setupDelayButtons()
-        }
+        // Always initialize UI regardless of permissions
+        // Permissions are checked when user actually presses a button
+        Helper.loadDelay(this)
+        initializeViews()
+        initializeSpamButtons()
+        restoreSpammerUiState()
+        setupDelayButtons()
     }
 
     private fun restoreSpammerUiState() {
