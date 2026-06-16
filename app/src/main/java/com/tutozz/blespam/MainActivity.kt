@@ -978,9 +978,13 @@ class MainActivity : AppCompatActivity() {
 
         // Analytics: Screen view
 
-        resetAllSpammerButtonsUi()
-        restoreSpammerUiState()
-        updateLogoAnimation()
+        try {
+            resetAllSpammerButtonsUi()
+            restoreSpammerUiState()
+            updateLogoAnimation()
+        } catch (e: UninitializedPropertyAccessException) {
+            Log.w("BLESpam", "onResume: buttons not yet initialized, skipping UI reset")
+        }
     }
 
     override fun onDestroy() {
