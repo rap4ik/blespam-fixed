@@ -427,6 +427,7 @@ class ContinuitySpam(private val type: ContinuityType, var crashMode: Boolean = 
 
                 try {
                     advertiser.startAdvertisingSet(parameters, data, null, null, null, currentCallback)
+                    PacketLogger.logTx("iOS Extended", data.manufacturerSpecificData?.let { if(it.size()>0) it.valueAt(0).joinToString(""){b->"%02X".format(b)} else "N/A" } ?: "N/A")
                 } catch (e: Exception) {
                     Log.e(TAG, "Error starting advertising: ${e.message}")
                 }
@@ -545,6 +546,7 @@ class ContinuitySpam(private val type: ContinuityType, var crashMode: Boolean = 
 
                 try {
                     advertiser.startAdvertising(settings, data, legacyCallback)
+                    PacketLogger.logTx("iOS Legacy", data.manufacturerSpecificData?.let { if(it.size()>0) it.valueAt(0).joinToString(""){b->"%02X".format(b)} else "N/A" } ?: "N/A")
                 } catch (e: Exception) {
                     Log.e(TAG, "Error starting legacy advertising: ${e.message}")
                 }
