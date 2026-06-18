@@ -20,7 +20,7 @@ class BluetoothAdvertiser {
     private val advertiseCallback = object : AdvertiseCallback() {
         override fun onStartSuccess(settingsInEffect: AdvertiseSettings) {
             Helper.log("Advertising started")
-            PacketLogger.logTx("BLE Legacy", "Legacy advertising started")
+            PacketLogger.logTx("BLE Legacy", "Legacy started")
         }
 
         override fun onStartFailure(errorCode: Int) {
@@ -80,11 +80,11 @@ class BluetoothAdvertiser {
         // ИСПРАВЛЕНИЕ: setLegacyMode(false) для payload > 31 байт, scannable(false)
         // ═══════════════════════════════════════════════════════════
         val params = AdvertisingSetParameters.Builder()
-            .setLegacyMode(false)
+            .setLegacyMode(false)  // ← ИЗМЕНЕНО! Было true
             .setInterval(AdvertisingSetParameters.INTERVAL_MIN)
             .setTxPowerLevel(AdvertisingSetParameters.TX_POWER_HIGH)
             .setConnectable(false)
-            .setScannable(false)
+            .setScannable(false) // ← ИЗМЕНЕНО! Было true, вызывало внутреннюю ошибку (4) без scanResponse
             .setPrimaryPhy(BluetoothDevice.PHY_LE_1M)
             .setSecondaryPhy(BluetoothDevice.PHY_LE_1M)
             .build()
@@ -97,7 +97,7 @@ class BluetoothAdvertiser {
             ) {
                 if (status == ADVERTISE_SUCCESS) {
                     Helper.log("Extended advertising started (tx=$txPower dBm)")
-                    PacketLogger.logTx("BLE Extended", "tx=${txPower}dBm status=$status")
+                    PacketLogger.logTx("BLE Extended", "tx=${txPower}dBm")
                 } else {
                     Helper.log("Extended advertising failed: $status")
                     if (status == 2) { // DATA_TOO_LARGE
