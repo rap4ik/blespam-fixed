@@ -161,6 +161,12 @@ class MainActivity : AppCompatActivity() {
         val scrollView = findViewById<ScrollView>(R.id.logScrollView)
         val counterView = findViewById<android.widget.TextView>(R.id.packetCounter)
         PacketLogger.attach(logView, scrollView, counterView)
+        
+        // Log BLE 5.0 support
+        val adapter = android.bluetooth.BluetoothAdapter.getDefaultAdapter()
+        val ble5 = adapter?.isLeExtendedAdvertisingSupported ?: false
+        val maxLen = adapter?.leMaximumAdvertisingDataLength ?: 0
+        PacketLogger.logEvent("BLE5=$ble5 maxAdvLen=$maxLen")
 
         // 1. ИНИЦИАЛИЗАЦИЯ UI ЭЛЕМЕНТОВ СРАЗУ ПОСЛЕ setContentView
         logo = findViewById(R.id.logo)
